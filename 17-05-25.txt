@@ -1,0 +1,99 @@
+show databases;
+create database vit_ap;
+show tables from vit_ap;
+drop database vit;
+create table IT(
+s_id int,
+s_name varchar(50),
+s_marks int
+);
+use vit_ap;
+select * from cse;
+insert into cse values(10, 'balaji', 89);
+
+-- Creating and Inserting values into database
+create database college;
+show databases;
+use college;
+create table Students (
+    s_id int primary key,
+    s_name varchar(50),
+    age int,
+    grade int
+);
+insert Students (s_id, s_name, age, grade) values
+(1, 'Balaji', 18, 9),
+(2, 'Eswara', 19, 10),
+(3, 'Shunmuck', 18, 9),
+(4, 'Gurunath', 20, 11),
+(5, 'Durga', 19, 10),
+(6, 'Vamsi', 21, 12),
+(7, 'Tarun', 18, 9),
+(8, 'Purna', 20, 11),
+(9, 'vishwa', 19, 10),
+(10, 'sai', 21, 12);
+
+create table Courses (
+    C_id int primary key,
+    C_name varchar(50),
+    Teacher varchar(50),
+    Credits int
+);
+
+insert into Courses (C_id, C_name, Teacher, Credits) values
+(101, 'Maths', 'Mr. Ram mohan', 4),
+(102, 'English', 'Mrs. Radha', 3),
+(103, 'History', 'Mr. Balaji', 3),
+(104, 'Dbms', 'Mr. Aditya ', 4),
+(105, 'Computer Science', 'Ms. Krishna', 4),
+(106, 'OS', 'Ms. Sai', 2),
+(107, 'ML', 'Mr. King', 2),
+(108, 'AI', 'Mr. Subbu', 1),
+(109, 'DAA', 'Mr. Kumar', 4),
+(110, 'DSA', 'Mr. Rahul ', 4);
+
+create table Enrollments (
+    E_id int primary key,
+    s_id int,
+    C_id int,
+    grade char(1),
+    foreign key (s_id) references Students(s_id),
+    foreign key (C_id) references Courses(C_id)
+);
+
+insert into Enrollments (E_id, s_id, C_id, grade) values
+(1, 1, 101, 'A'),
+(2, 2, 102, 'B'),
+(3, 3, 103, 'A'),
+(4, 4, 104, 'C'),
+(5, 5, 105, 'B'),
+(6, 6, 106, 'A'),
+(7, 7, 107, 'B'),
+(8, 8, 108, 'A'),
+(9, 9, 109, 'A'),
+(10, 10, 110, 'B');
+
+select * from Students;
+desc Students;
+
+select * from Courses;
+desc Courses;
+
+select * from Enrollments;
+desc Enrollments;
+
+-- Adding a new column (ALter)
+desc cse;
+alter table cse add(s_address varchar(50));
+select * from cse;
+
+-- droping the column (alter)
+alter table cse drop column s_address;
+select * from cse;
+
+-- update the table(cse)
+desc cse;
+select * from cse;
+update cse set s_marks=100 where s_name='balaji';
+
+update cse set s_marks=s_marks+102;
