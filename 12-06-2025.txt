@@ -1,0 +1,23 @@
+mkdir data
+cd data
+mkdir db0
+mkdir db1
+mkdir db2
+
+C:\Program Files\MongoDB\Server\<version>\bin\mongod.exe --replSet myReplSet --dbpath C:\data\db0 --port 27017 --bind_ip localhost
+C:\Program Files\MongoDB\Server\<version>\bin\mongod.exe --replSet myReplSet --dbpath C:\data\db1 --port 27018 --bind_ip localhost
+C:\Program Files\MongoDB\Server\<version>\bin\mongod.exe --replSet myReplSet --dbpath C:\data\db2 --port 27019 --bind_ip localhost
+
+mongosh --port 27017
+mongosh --port 27018
+mongosh --port 27019
+
+JavaScript
+rs.initiate({
+    _id: "myReplSet",
+    members: [
+        { _id: 0, host: "localhost:27017" },
+        { _id: 1, host: "localhost:27018" },
+        { _id: 2, host: "localhost:27019" }
+    ]
+})
