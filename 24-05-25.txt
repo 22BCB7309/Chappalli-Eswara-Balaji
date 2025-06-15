@@ -1,0 +1,95 @@
+show databases;
+use vit;
+show tables from vit;
+create table student(
+id int,
+name varchar(25),
+marks int
+);
+insert into student values(1,"Eswara",99), (2, "Balaji",100);
+select * from student;
+
+
+package connection;
+import java.sql.*;
+public class DBConnection {
+
+	public static void main(String[] args) {
+	try{
+		Class.forName("com.mysql.cj.jdbc.Driver");
+		
+		Connection con=DriverManager.getConnection(
+		"jdbc:mysql://localhost:3306/vit","root","Msdhoni@7");		
+		Statement stmt=con.createStatement();
+		ResultSet rs=stmt.executeQuery("select * from student");
+		while(rs.next())
+			System.out.println(rs.getInt(1)+" "+rs.getString(2)+" "+rs.getInt(3));
+			con.close();
+	}
+	catch(Exception e){
+		System.out.println("Sorry! check credentials again");
+	}
+		
+	}
+
+}
+
+
+
+package crud_operation;
+import java.sql.Connection;
+import java.sql.DriverManager;
+public class DB_Connection {
+
+	public static void main(String[] args) {
+		DB_Connection obj_DB_Connection = new DB_Connection();
+		System.out.println(obj_DB_Connection.get_connection());
+	}
+	public Connection get_connection(){
+		Connection connection=null;
+		try{
+			Class.forName("com.mysql.cj.jdbc.Driver");
+			connection =DriverManager.getConnection(
+			"jdbc:mysql://localhost:3306/vit","root","Msdhoni@7");
+		}
+		catch(Exception e){
+			System.out.println(e);
+		}
+		return connection;
+	}
+
+}
+
+
+package crud_operation;
+
+import java.sql.PreparedStatement;
+
+public class CRUD_Operation {
+
+	public static void main(String[] args) {
+		
+		CRUD_Operation objTest=new CRUD_Operation();
+
+	objTest.create_data("3", "Harry", 97);
+	objTest.create_data("4", "Potter", 98);
+
+}
+
+public void create_data(String sl_no,String name,int marks){
+	DB_Connection obj_DB_Connection=new DB_Connection();
+	java.sql.Connection connection=obj_DB_Connection.get_connection();
+	PreparedStatement ps=null;
+	try {
+		String query="insert into student values (?,?,?)";
+		ps=connection.prepareStatement(query);
+		ps.setString(1, sl_no);
+		ps.setString(2, name);
+		ps.setInt(3, marks);
+		System.out.println(ps);
+		ps.executeUpdate();
+	} catch (Exception e) {
+		System.out.println(e);
+	}
+}
+}
