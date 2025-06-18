@@ -1,0 +1,50 @@
+-- constraints in sql
+create database Tuesday;
+use Tuesday;
+create table category(c_id int primary key, c_name varchar(25), c_details varchar(30));
+insert into category values (101, 'electronics', 'abcdef');
+insert into category values (102, 'furniture', 'abcdefghijklm');
+select * from category;
+drop table products;
+
+-- delete cascade
+create table products(p_id int primary key, p_name varchar(25), p_details varchar(30), c_id int,
+foreign key (c_id) references category(c_id) on delete cascade);
+desc products;
+delete from category where c_id=101;
+alter table category drop c_id;
+insert into products values(501, 'iphone 16', '8GB ram', 101);
+select * from products;
+
+-- update cascade
+create table product(p_id int primary key, p_name varchar(25), p_details varchar(30), c_id int,
+foreign key (c_id) references category(c_id) on update cascade);
+insert into product values(501, 'iphone 16', '8GB ram', 101);
+select * from product;
+
+-- alter constranints
+-- 1
+alter table persons add unique (id);
+-- 2
+alter table persons add constraint uc_person unique (id, lastName);
+-- 3
+alter table persons drop index uc_person;
+create table persons(id int, lastName varchar(255) not null, firstName varchar(255),age int, PRIMARY KEY(ID));
+
+
+create table person(ID int not null, lastName varchar(255) not null, FirstName varchar(255), age int, constraint PK_person primary key(ID,LastName));
+-- 1
+alter table person add primary key(id);
+-- 2
+alter table person add constraint pk_person primary key (ID,lastName); 
+-- 3 
+alter table person drop primary key;
+
+
+create table orders(O_id int not null,O_number int not null,P_id int, primary key (o_id), constraint FK_p_order foreign key (p_id) references persons(id));
+-- *1
+alter table orders add foreign key(P_id) references persons(id);
+-- 2
+alter table orders add constraint FK_p_order foreign key (P_id) references persons(id);
+-- *3
+alter table orders drop foreign key FK_p_order;

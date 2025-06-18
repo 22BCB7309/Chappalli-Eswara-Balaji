@@ -1,0 +1,62 @@
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.FindIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+import com.mongodb.client.model.Filters;
+import org.bson.conversions.Bson;
+
+public class range {
+    public static void main(String[] args) {
+        
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("java");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        Bson priceRangeFilter = Filters.and(
+            Filters.gte("price", 700),
+            Filters.lte("price", 900)
+        );
+
+        FindIterable<Document> filteredDocuments = collection.find(priceRangeFilter);
+
+        for (Document document : filteredDocuments) {
+            System.out.println(document);
+        }
+
+    }
+}
+
+
+package connection;
+
+import org.bson.Document;
+import com.mongodb.client.AggregateIterable;
+import com.mongodb.client.MongoClient;
+import com.mongodb.client.MongoClients;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
+
+import java.util.Arrays;
+
+public class averageProductPrice {
+    public static void main(String[] args) {
+
+        MongoClient mongoClient = MongoClients.create("mongodb://localhost:27017");
+        MongoDatabase database = mongoClient.getDatabase("java");
+        MongoCollection<Document> collection = database.getCollection("products");
+
+        AggregateIterable<Document> result = collection.aggregate(Arrays.asList(
+            new Document("$group", new Document("_id", "$name")
+                .append("averagePrice", new Document("$avg", "$price")))
+        ));
+
+        for (Document doc : result) {
+            System.out.println(doc.get("_id") + ", Average Price: " + doc.get("averagePrice"));
+        }
+
+    }
+}

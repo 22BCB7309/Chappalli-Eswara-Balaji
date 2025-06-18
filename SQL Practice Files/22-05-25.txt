@@ -1,0 +1,21 @@
+use vit;
+select * from worker;
+select department, count(department) from worker group by department;
+
+select count(department) from worker group by department order by count(department) desc limit 1;
+select department, sum(salary) as sume from worker group by department order by sume desc limit 1;
+select department, count(department) from worker group by department having count(department)>3;
+select first_name, department from worker where salary = (select max(salary) from worker);
+
+create table student(s_id int, s_name varchar(25));
+insert into student values (101,'Balaji'),(102,'Eswara'),(103,'Shunmuck'),(105,'Gurunath');
+select * from student;
+
+create table address(s_id int, s_address varchar(25));
+insert into address values (101,'UK'),(104,'ENGLAND'),(105,'HOGWARTS');
+select * from address;
+
+show tables from vit;
+select * from student cross join address;
+select * from student inner join address where student.s_id = address.s_id;
+select * from student left outer join address on (student.s_id = address.s_id);
